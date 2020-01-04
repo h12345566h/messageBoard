@@ -21,8 +21,21 @@ class MessageService
 
     public function getMessage()
     {
-            $message = MessageEloquent::orderByDesc('created_at')->get();
-            return $message;
+        $message = MessageEloquent::orderByDesc('created_at')->get();
+        return $message;
     }
+
+    public function deleteMessage($postData)
+    {
+        $message = MessageEloquent::find($postData['m_id']);
+        if($message){
+            $message->delete();
+            return '';
+        }else{
+            return '找不到該訊息';
+        }
+
+    }
+
 
 }

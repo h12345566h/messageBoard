@@ -19,8 +19,8 @@ class CreateMessagesTable extends Migration
             $table->string('content', 100);
             $table->foreign('account')->references('account')->on('users');
             $table->index('content');
-            $table->dateTime('created_at');
-
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

@@ -42,6 +42,30 @@ class MessageController extends Controller
         $result = $this->messageService->getMessage();
         return response()->json($result, 200, [], JSON_UNESCAPED_UNICODE);
     }
+
+    public function deleteMessage(Request $request)
+    {
+        $postData = $request->all();
+        $objValidator = Validator::make(
+            $postData,
+            [
+                'm_id' => 'required|integer'
+            ],
+            [
+                'm_id.required' => '001錯誤',
+                'm_id.integer' => '002錯誤'
+            ]
+        );
+        if ($objValidator->fails())
+            return response()->json($objValidator->errors()->all(), 400, [], JSON_UNESCAPED_UNICODE);
+        $result = $this->messageService->deleteMessage($postData);
+        if ($result != '')
+            return response()->json($result, 400, [], JSON_UNESCAPED_UNICODE);
+        else
+            return response()->json('刪除成功', 200, [], JSON_UNESCAPED_UNICODE);
+    }
+
+
     public function gePtt(Request $request)
     {
         $dd = $request->input('page');

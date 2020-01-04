@@ -12,7 +12,7 @@ Route::group(['middleware' => ['displayChinese', 'cors']], function () {
     Route::group(['middleware' => 'jwt_auth'], function () {
         Route::get('getMessage', 'MessageController@getMessage');
         Route::post('sendMessage', 'MessageController@sendMessage');
-
+        Route::post('deleteMessage', 'MessageController@deleteMessage');
     });
 });
 
