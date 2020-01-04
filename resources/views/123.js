@@ -1,8 +1,9 @@
 var Domain = "http://localhost/messageBoard/public/api/";
-    $(document).ready(function () {
+$(document).ready(function () {
     $(document).delegate('#sendMessage', 'click', sendMessage);
     $(document).delegate('#register', 'click', register);
     $(document).delegate('#login', 'click', login);
+    $(document).delegate('.deleteMessage', 'click', deleteMessage);
     getMessage();
 });
 
@@ -85,7 +86,9 @@ function getMessage() {
                     KeywordBody +=
                         '<div class="sList">' +
                         '<span> ' + res[i].account + ' ' + res[i].content + ' </span>' +
-                        '</div><br>'
+                        '<span class="deleteMessage" data-mid="' + res[i].m_id + '"> 刪除 </span>' +
+                        '<br/>'+
+                        '</div>'
                 }
                 $("#MessageList").append(KeywordBody);
             },
@@ -94,3 +97,26 @@ function getMessage() {
         }
     });
 }
+
+function deleteMessage() {
+    var m_id = $(this).data('mid');
+    var now=$(this)
+    console.log(m_id);
+    var url = Domain + "deleteMessage";
+    $.ajax({
+        type: "post",
+        url: url,
+        data: {m_id: m_id},
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer ' + Cookies.get('token'));
+        },
+        statusCode: {
+            200: function (res) {
+                now.closest('.sList').remove();
+            },
+            400: function (resStr) {
+            }
+        }
+    });
+}
+
